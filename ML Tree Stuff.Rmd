@@ -1,0 +1,166 @@
+---
+title: "ML Tree Stuff"
+author: "Linden James"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tree Data Stuff
+
+```{r}
+# Load data 
+trees <- read.csv("/Users/linde/Downloads/2015_Street_Tree_Census_-_Tree_Data_20260326.csv", stringsAsFactors = FALSE)
+```
+
+```{r}
+# Get rid of the tree_id column 
+trees <- trees[ , 2, drop = FALSE] 
+names(trees) <- "postcode"
+```
+
+```{r}
+# Count trees per postcode
+zip_counts <- as.data.frame(table(trees$postcode))
+colnames(zip_counts) <- c("zipcode", "tree_count")
+
+# Write final csv
+write.csv(zip_counts, "trees_by_zip.csv", row.names = FALSE)
+```
+
+## 311 Call Stuff
+
+Load data + standardize names:
+
+```{r}
+# Load data 
+calls <- read.csv("/Users/linde/Downloads/311 Calls.csv", stringsAsFactors = FALSE)
+calls_df <- calls 
+
+# Standardize names 
+colnames(calls_df)[colnames(calls_df) == "Created.Date"] <- "date"
+colnames(calls_df)[colnames(calls_df) == "Incident.Zip"] <- "zipcode"
+```
+
+Drop rows without a zipcode:
+
+```{r}
+# Drop the rows that have no zipcodes 
+calls_df$zipcode <- as.character(calls_df$zipcode)
+calls_df$zipcode <- trimws(calls_df$zipcode)
+calls_df <- calls_df[!is.na(calls_df$zipcode) & calls_df$zipcode != "", ]
+
+# Check result
+nrow(calls_df)
+head(calls_df$zipcode)
+```
+
+Fix date column:
+
+```{r}
+# Convert to correct POSIXct 
+calls_df$date <- as.POSIXct(
+  calls_df[["date"]],
+  format = "%m/%d/%Y %I:%M:%S %p",
+  tz = "UTC"
+)
+
+# Get just the calendar date
+calls_df$date_only <- as.Date(calls_df$date)
+
+# Tell R to focus on just 2018-2025
+calls_df$year <- as.integer(format(calls_df$date_only, "%Y"))
+calls_df <- subset(calls_df, year >= 2018 & year <= 2025)
+```
+
+Make 311 call counts per zipcode:
+
+```{r}
+# Count calls per zipcode per date 
+calls_small <- data.frame(
+  zip_code = calls_df[["zipcode"]],
+  date     = calls_df$date_only,
+  stringsAsFactors = FALSE
+)
+
+# Aggregate counts by zipcode and date
+agg <- as.data.frame(table(calls_small$zip_code, calls_small$date))
+
+# Rename columns
+colnames(agg) <- c("zip_code", "date", "call_count")
+
+# Convert date back to Date 
+agg$date <- as.Date(agg$date)
+agg <- subset(agg, call_count > 0)
+```
+
+Add all the zipcodes from the tree dataset to ensure that all zipcodes are aligned:
+
+```{r}
+# Get the full set of ZIP codes from the tree data
+all_zips <- sort(unique(zip_counts$zipcode))
+
+length(all_zips)
+
+# Build the full sequence of dates May 15–Sept 15 for each year 2018–2025
+years <- 2018:2025
+
+all_dates <- do.call(
+  c,
+  lapply(
+    years,
+    function(y) seq.Date(
+      from = as.Date(paste0(y, "-05-15")),
+      to   = as.Date(paste0(y, "-09-15")),
+      by   = "day"
+    )
+  )
+)
+
+length(all_dates) 
+range(all_dates) 
+
+# 5.3 Create the full grid of ZIP × date
+full_grid <- expand.grid(
+  zip_code = all_zips,
+  date     = all_dates,
+  stringsAsFactors = FALSE
+)
+```
+
+```{r}
+# Ensure the types match between agg and full_grid
+agg$zip_code <- as.character(agg$zip_code)
+agg$date     <- as.Date(agg$date)
+
+full_grid$zip_code <- as.character(full_grid$zip_code)
+full_grid$date     <- as.Date(full_grid$date)
+
+# Merge 
+full_with_counts <- merge(
+  full_grid,
+  agg,
+  by = c("zip_code", "date"),
+  all.x = TRUE
+)
+
+# Replace NAs in call_count with 0
+full_with_counts$call_count[is.na(full_with_counts$call_count)] <- 0
+
+# Sort
+full_with_counts <- full_with_counts[order(full_with_counts$zip_code,
+                                           full_with_counts$date), ]
+```
+
+Write final CSV:
+
+```{r}
+# Format date as "MM/DD/YY" 
+full_with_counts$date <- format(full_with_counts$date, "%m/%d/%y")
+
+# Write the final CSV
+write.csv(full_with_counts, "calls_by_zip_date_full_grid.csv", row.names = FALSE)
+```
