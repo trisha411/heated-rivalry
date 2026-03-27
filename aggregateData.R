@@ -18,7 +18,7 @@ density <- density %>% select(c("zip", "population_density", "population")) %>%
 nat_gas <- read_csv("data/Natural_Gas_Consumption_by_ZIP_Code_-_2010_20260326.csv")
 nat_gas <- nat_gas %>% select(c('Zip Code', "Consumption (therms)")) %>% 
   rename(gas2010_therms = "Consumption (therms)", zip = "Zip Code") %>% 
-  separate(zip, into = c("zip", "lat", "lon"), sep = " ") %>% select(zip, gas2010_therms)
+  separate(zip, into = c("zip", "lat", "lon"), sep = " ") %>% select(zip, gas2010_therms) %>%
   mutate(zip = as.character(zip))
 nat_gas <- nat_gas %>% group_by(zip) %>% summarize(gas_therms = sum(gas2010_therms, na.rm = TRUE))
 
@@ -72,7 +72,8 @@ time_const <- full_join(time_const, density, by = "zip")
 # MERGE WITH 311 CALLS
 final_data <- full_join(calls, time_const, by = "zip")
 final_data <- full_join(final_data, temp, by = c("date"))
-
+no_na <- final_data %>% select(-steam_Mg) %>% na.omit()
 
 # export
 write.csv(final_data, file = "data/allData.csv")
+write.csv(no_na, file = "data/data_NAandSteamOmitted.csv")
