@@ -1,0 +1,26 @@
+name: heated_rivalry
+channels:
+  - conda-forge
+dependencies:
+  # These packages are required if you want your environment to show up in jupyterlab
+  - python=3.12
+  - ipywidgets
+  - ipykernel
+  # Commonly used packages
+  - xarray
+  - numpy
+  - scipy
+  - dask
+  - zarr
+  - pandas
+  - matplotlib
+  - xrft
+  - cartopy
+  - glidertools
+  - xhistogram
+  - pip 
+  - graphviz
+  - imageio 
+  - scikit-learn
+  - xgboost
+  - pytorch
