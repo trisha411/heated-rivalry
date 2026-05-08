@@ -27,7 +27,7 @@ Goal: prepare tree counts and 311 calls datasets for use in aggregateData.R
 
 ## Other Components
 ### technical_blog_post.html
-HTML file for rendering our final technical blog post in-browser.
+HTML file for rendering our final technical blog post in-browser (images are stored in the repository under the "blog_images" and "model" folders). If there are issues with rendering the .html file, refer to "Heated Rivalry Final Project Blog.pdf" to access the same content in PDF format (note that the Figure 2 GIF does not properly display in this format.
 
 ### environment.yml
 Creates the heated_rivalry Conda environment (with some pip dependencies) necessary to run all .ipynb and .py scripts.
