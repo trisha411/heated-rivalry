@@ -374,7 +374,7 @@
           <li>
             <a href="#s3-2">3.2 Model Selection</a>
             <ul class="toc-sub2">
-              <li><a href="#s3-2-1">3.2.1 Cross-Sectional Baseline: XGBoost</a></li>
+              <li><a href="#s3-2-1">3.2.1 Cross-Sectional Baseline Model of Choice: XGBoost</a></li>
               <li><a href="#s3-2-2">3.2.2 Long Short-Term Memory Models</a></li>
             </ul>
           </li>
@@ -399,12 +399,13 @@
         <a href="#section5">5. Results</a>
         <ul class="toc-sub">
           <li><a href="#s5-1">5.1 Summer 2025 Temporal HVI Output</a></li>
-          <li><a href="#s5-2">5.2 Answering Our Hypotheses</a></li>
+          <li><a href="#s5-2">5.2 Model Comparison on the 2025 Temporal Test Set</a></li>
+          <li><a href="#s5-3">5.3 The Hollander Applet</a></li>
+          <li><a href="#s5-4">5.4 Answering Our Hypotheses</a></li>
         </ul>
       </li>
       <li style="margin-top:0.5rem;"><a href="#section6">6. Limitations</a></li>
       <li style="margin-top:0.5rem;"><a href="#section7">7. Conclusions &amp; Future Work</a></li>
-      <li style="margin-top:0.5rem;"><a href="#works-cited">Works Cited</a></li>
       <li style="margin-top:0.5rem;"><a href="#appendix">Appendix</a></li>
     </ol>
   </div>
@@ -416,31 +417,36 @@
   <!-- SECTION 1 -->
   <section id="section1">
     <h2>I. Introduction &amp; Literature Review</h2>
-    <p class="placeholder">[Input your introductory text here.]</p>
 
     <h3 id="s1-1">1.1 Heat Exposure-Related Mortality</h3>
-    <p class="placeholder">[Input your text here.]</p>
+    <p class="placeholder">In the past decades, rising heat has developed into a nationwide concern in the United States. Global warming has <a href="https://www.epa.gov/heatislands/heat-island-trends">contributed</a> to average temperatures increasing across the country by about 60% since the 1970s. This worsening climate has <a href="https://www.who.int/news-room/fact-sheets/detail/climate-change-heat-and-health">severe</a> public health implications with heat stress being the “leading cause of weather-related deaths” according to the World Health Organization. In the U.S. specifically, a recent study conducted by the Yale School of Public Health found that heat-exposure related deaths <a href="https://ysph.yale.edu/news-article/warming-us-climate-linked-to-rising-deaths-from-heat/">rose</a> by over 50% in the past twenty years.</p>
+    <p class="placeholder">Large metropolitan areas are particularly susceptible to this trend because of the <a href="https://www.who.int/news-room/fact-sheets/detail/climate-change-heat-and-health" >“heat island effect”</a>. Scholars describe this phenomenon as the <a href="https://climate.mit.edu/explainers/urban-heat-islands">tendency</a> of heat to accumulate in cities because of how manmade structures absorb warmth much more than natural surfaces do. Furthermore, many urban areas have <a href="https://science.nasa.gov/earth/climate-change/nasa-data-reveals-role-of-green-spaces-in-cooling-cities/">insufficient green space</a> because of the development necessary to support a large population. NYC faces this effect more acutely than anywhere else in the nation. Residents <a href="https://www.climatecentral.org/climate-matters/urban-heat-islands-2024">experience </a> temperatures around 9.7 degrees hotter than otherwise, the largest “per capita temperature boost” in comparison to the 65 other cities analyzed in the survey. Such climate is extremely dangerous for New Yorkers at large, with, on average, more than 500 residents <a href="https://a816-dohbesp.nyc.gov/IndicatorPublic/data-features/heat-report/">dying</a> every summer as a result of the heat. Consequently, the city devotes considerable resources towards reducing the effects of the heat as much as they can. These include <a href="https://portal.311.nyc.gov/article/?kanumber=KA-02663">Cooling Centers</a>, for example, which are air-conditioned public areas.</p>
+
 
     <h3 id="s1-2">1.2 Environmental Justice &amp; Heat Vulnerability Indices (HVI)</h3>
-    <p class="placeholder">[Input your text here.]</p>
+    <p class="placeholder">Crucially, not all of the areas of the city are affected <a href="https://www.climatecentral.org/climate-matters/urban-heat-islands-2024">equally</a> by the heat. Some parts of the city have indexes up to 13 degrees Fahrenheit, while others <a href="https://gothamist.com/news/the-urban-heat-island-effect-is-making-new-yorkers-hotter-study-finds">experience</a> less than 6 degrees Fahrenheit. Similarly, not every individual experiences the severity of the heat in the same way, with research finding low-income and non-white populations in NYC to be the <a href="http://pmc.ncbi.nlm.nih.gov/articles/PMC4348023/">most at-risk</a> for heat-related health problems. Given this asymmetry, it follows that the locations where people are most vulnerable must be identified, so that government officials can allocate more resources during periods of strong heat. This is the role of the Heat Vulnerability Index (HVI), a statistical measure which <a href="https://a816-dohbesp.nyc.gov/IndicatorPublic/data-features/hvi/">identifies</a> the neighborhoods within a city whose residents are most at risk of fatalities due to the heat. </p>
+    <p class="placeholder">HVIs are developed using a variety of factors. For example, an HVI developed for Philadelphia <a href="https://doi.org/10.1186/1476-069X-11-16">included</a> factors such as surface temperature, ethnicity, income, and age, as reviewed by Hondula et al.. In Phoenix, an HVI reviewed by Winston Chow et al. used similar elements, but <a href="https://doi.org/10.1080/00330124.2011.600225">supplemented</a> them with immigration status and vegetation levels. The geographical unit of analysis also varies between the different indices, whether it be counties, census tracts, or postal codes. NYC’s HVI was created by the city’s Department of Health and Mental Hygiene (DOHMH), and analyzes data on surface temperature, green space, home air conditioning, and income in order to determine the score of a particular ZIP code. A score of 1 <a href="https://medium.com/@sg9437/development-of-an-enhanced-heat-vulnerability-index-for-new-york-city-to-find-priority-cee66cec741d">represents</a> the lowest vulnerability, while 5 represents the highest. </p>
+    <p class="placeholder">Since its inception, NYC has focused resources towards communities with high HVIs. For example, they have <a href="https://www.nycgovparks.org/about/health-and-safety-guide/cool-it-nyc">developed</a> “Cool It! NYC,” a citywide plan to increase the amount of publicly available “cooling features” in these areas, including pools and showers. Researchers built upon this framework over the years, developing an “Enhanced Heat Vulnerability Index” which also <a href="https://medium.com/@sg9437/development-of-an-enhanced-heat-vulnerability-index-for-new-york-city-to-find-priority-cee66cec741d">included</a> tree, park, and age data. Despite these improvements, a clear research gap remains: HVI is a static measure. Scholars agree that, while useful when data is from several years, the index considers vulnerability in hindsight rather than constructing a dynamic and predictive picture. It is within this lacuna that our project intervenes, using ML to transform the HVI from a fixed index into a living tool.</p>
 
     <h3 id="s1-3">1.3 Technical Literature Review</h3>
-    <p class="placeholder">[Input your text here.]</p>
+    <p class="placeholder">In the past couple years, there have been significant advancements in the use of machine learning for climate-related analysis. Researchers Jigar Doshi et al., for example, have <a href="https://research.facebook.com/publications/from-satellite-imagery-to-disaster-insights/">implemented</a> CNNs in order to analyze satellite imagery from disaster zones and identify where rescue efforts should be targeted. Similarly, Seoyeong Ahn et al. <a href="https://pubs.acs.org/doi/full/10.1021/envhealth.4c00201">gathered</a> existing and simulated data to train a spatial model which forecasts the predicted health risk of PM2.5, a harmful atmospheric pollutant, in different areas of South Korea. It is no surprise, thus, that ML has been <a href="https://mitsloan.mit.edu/ideas-made-to-matter/climate-change-and-machine-learning-good-bad-and-unknown">deemed</a> a “powerful tool” for predicting climate risks through “computationally tractable” models.</p>
+    <p class="placeholder">Considering the specific area of climate-related impact that this paper will focus on, heat vulnerability, there have been notable studies conducted worldwide, establishing a clear history of the ideas we intend to explore. For example, Shan Jiang et al. <a href="https://link.springer.com/article/10.1186/s12874-021-01278-x">employed</a> logic regression to construct decision trees which identified “extreme heat exposure” as derived from simulated health-outcome data from Atlanta, Georgia. In “Use of machine learning tools to predict health risks from climate-sensitive extreme weather events: A scoping review,” Ssebyala et al. <a href="https://journals.plos.org/climate/article?id=10.1371%2Fjournal.pclm.0000338#pclm.0000338.ref019">deconstructed</a> several heat-related ML projects from the past decade, identifying some interesting patterns—namely, that none of them employed XGBoost or LSTMs in their experiments, as we intend to do.</p>
+    <p class="placeholder">Within this area, a couple of other studies merit consideration. For one, in 2025, Ermanno Zuccarini <a href="https://doi.org/10.18280/ijht.430536">employed</a> LSTM modeling to analyze the UHI effect in a small Italian town. The study <a href="https://doi.org/10.18280/ijht.430536">trained</a> a predictive model to simulate hourly forecasts, with the results deeming LSTMs as particularly useful in making research more “cost-effective”. Furthermore, Fatima Shafiq et al. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11925282/">performed</a> a study comparing the efficacy of a wide array of deep learning models—including Artificial Neural Networks (ANNs), CNNs, and LSTMs—in predicting extreme heatwaves in Pakistan. Her team found that LSTMs in fact <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11925282/">outperformed</a> all other models, attaining an accuracy of 96.2%. </p>
   </section>
 
   <!-- SECTION 2 -->
   <section id="section2">
     <h2>2. Research Questions &amp; Hypotheses</h2>
-    <p class="placeholder">[Input your research question text here.]</p>
+    <p class="placeholder">This project investigates the following research question: Can an LSTM use recent ZIP-code-level behavioral and environmental signals to model heat vulnerability as a dynamic, time-sensitive process rather than a static index? To answer this research question, we hypothesize:</p>
 
     <div class="hypothesis-grid">
       <div class="hypothesis-box">
         <div class="h-label">Hypothesis 1</div>
-        <p class="placeholder">[Input Hypothesis 1 here.]</p>
+        <p class="placeholder">Heat vulnerability is not a time-static measure, as suggested by the NYC HVI. HVI scores outputted by the LSTM and XGBoost models will exhibit nonzero daily variation.</p>
       </div>
       <div class="hypothesis-box">
         <div class="h-label">Hypothesis 2</div>
-        <p class="placeholder">[Input Hypothesis 2 here.]</p>
+        <p class="placeholder">An LSTM trained on recent ZIP-code-level temporal sequences will capture temporal context in heat vulnerability that an XGBoost trained on independent daily observations cannot capture.</p>
       </div>
     </div>
   </section>
@@ -448,9 +454,9 @@
   <!-- SECTION 3 -->
   <section id="section3">
     <h2>3. Methodology</h2>
-    <p class="placeholder">[Input your methodology overview text here.]</p>
 
     <h3 id="s3-1">3.1 Data Collection &amp; Processing</h3>
+    <p class="placeholder">We built off of the variables already included in <a href="https://a816-dohbesp.nyc.gov/IndicatorPublic/data-features/hvi/">NYC and New York State's HVI indices</a>. We gathered data on both socioeconomic and environmental conditions, shown in the table below. The number of 311 calls on a given day and maximum daily temperature are the key time-varying variables, and to ensure that all variables could be organized neatly into one dataset, we constructed our final dataset in time-series fashion: each row is one ZIP code, and each ZIP code gets daily entries for the time range of May 15 - September 15, for the years of 2020 - 2025. </p>
 
     <div class="table-wrap">
       <table>
@@ -498,70 +504,58 @@
     <figcaption><strong>Table 1:</strong> Table of variables and the data used to represent them.</figcaption>
 
     <h3 id="s3-2">3.2 Model Selection</h3>
-    <p class="placeholder">[Input your model selection overview text here.]</p>
 
     <h4 id="s3-2-1">3.2.1 Cross-Sectional Baseline Model of Choice: XGBoost</h4>
-    <p class="placeholder">[Input your XGBoost description here.]</p>
+    <p class="placeholder">We used XGBoost as a baseline model because it is designed for strong performance on structured tabular data. XGBoost begins with an initial weak prediction and then adds decision trees sequentially. Each new tree is trained to correct errors made by the previous trees, so the model improves step by step rather than relying on a single decision tree. For our project, XGBoost learns by minimizing a multiclass classification loss, which penalizes incorrect class predictions. XGBoost fits this project well because our dataset combines fixed ZIP-code-level characteristics with daily environmental and behavioral signals. Some features, such as population density and tree coverage, remain constant across days, while others, such as temperature and 311 complaints, vary over time. XGBoost is well suited to this kind of structured dataset because it can capture nonlinear relationships and interactions between variables without requiring the model to treat the data as a time sequence.</p>
 
     <h4 id="s3-2-2">3.2.2 Long Short-Term Memory Models</h4>
-    <p class="placeholder">[Input your LSTM description here.]</p>
+    <p class="placeholder">LSTM models <a href="https://dl.acm.org/doi/10.1162/neco.1997.9.8.1735">are useful</a> when the order of observations matter, as they use information from earlier time steps to help predict later outcomes. This makes them different from models that treat each row as independent. This distinction matters for this project because heat vulnerability is not only shaped by conditions on a single day. It may also reflect what happened in the days leading up to that day, such as repeated high temperatures, accumulated 311 heat complaints, or ongoing infrastructure stress. </p>
+    <p class="placeholder">For this reason, the LSTM fits the central problem of the project. The official NYC HVI is static, meaning it gives neighborhoods a relatively fixed vulnerability score. But actual heat risk may <a href="https://www.nature.com/articles/s42949-025-00327-4#ref-CR14">change</a> over time. A ZIP code may be generally vulnerable, but its level of risk can rise during a heat wave, after several days of complaints, or when environmental and housing conditions worsen. LSTMs suit this data structure by allowing us to use rolling sequences of ZIP-code-level daily observations and to test whether recent temporal patterns contain useful information for predicting daily heat vulnerability.</p>
 
     <h3 id="s3-3">3.3 Inputs &amp; Outputs</h3>
-    <p class="placeholder">[Input your inputs and outputs description here.]</p>
+    <p class="placeholder">Both XGBoost and the LSTM used a risk signal as input, which was constructed out of the features (the independent variables). We used the official NYC HVI as a benchmark target for comparison, but not as an input feature in the models. To calculate risk signals, we used percentile-based binning to match the distribution of the DOHMH’s HVI. Each ZIP code's composite risk score, derived from our six input variables, was ranked across all ZIP codes, and then divided into five equal-sized groups by percentile, with the lowest 20% assigned a score of 1 and the highest 20% assigned a score of 5. Importantly, the risk signals for XGBoost were constructed using all available independent observations, but the risk signal for the LSTM model used only data from a pre-specified temporal sequence (e.g., 7 days).</p>
+    <p class="placeholder">After taking the risk signal as input, the model output predictions of HVI scores for each ZIP code. These predictions are specific numerical values, rather than a probability distribution, for ease of interpretability.</p>
 
     <h3 id="s3-4">3.4 Success Metrics</h3>
-    <p class="placeholder">[Input your success metrics description here.]</p>
+    <p class="placeholder">When evaluating XGBoost, we used accuracy and F1 and visualized using a confusion matrix. When evaluating the LSTM, we used precision (accuracy of positive predictions); recall (model’s ability to find all correct positives); F1 (average of precision and recall); accuracy; both macro and weighted average (the unweighted mean per HVI score category and the support-weighted mean per HVI score, which accommodates unequal HVI score distribution; and mean absolute class error (the Manhattan distance between each predicted and true HVI score observation divided by the class sample size). This allowed us to quickly choose a best baseline model, as well as robustly compare our LSTM to XGBoost. Higher precision, recall, F1, and accuracy scores, and a lower MAE, generally mean that the model performs better on the given data. </p>
   </section>
 
   <!-- SECTION 4 -->
   <section id="section4">
     <h2>4. Model Training and Finetuning</h2>
-    <p class="placeholder">[Input your training overview text here.]</p>
 
     <h3 id="s4-1">4.1 Training</h3>
 
     <h4 id="s4-1-1">4.1.1 XGBoost</h4>
-    <p class="placeholder">[Input your XGBoost training description here.]</p>
+    <p class="placeholder">XGBoost was trained using a 75-8.3-16.7 train-validation-test split. Training and validation data were split using stratified random sampling for 2020-2024, where the strata were HVI scores. Testing was done on 2025 data. The reasoning behind the split comes from maximizing the amount of data for training. Given that our dataset spans six years of daily ZIP-code-level observations, resulting in over 120,000 rows, the validation and test sets still provide sufficiently large holdout samples to evaluate model performance reliably. </p>
 
     <h4 id="s4-1-2">4.1.2 LSTM</h4>
-    <p class="placeholder">[Input your LSTM training description here.]</p>
-
-    <!-- Sparse Categorical Cross-Entropy Equation -->
-    <div class="equation">
-      <div class="eq-label">Loss Function — Sparse Categorical Cross-Entropy</div>
-      <div class="eq-math">
-        L = &minus; &Sigma;<sub>i</sub> y<sub>i</sub> &middot; log( ŷ<sub>i</sub> )
-      </div>
-      <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.5rem; font-weight:300; font-style:italic;">[Add any additional notation or explanation of terms here.]</div>
-    </div>
-
-    <p class="placeholder">[Continue LSTM training description here.]</p>
+    <p class="placeholder">We used a temporal test-train-validation split to ensure that the LSTM could generalize well to later time periods: 2020-2023 for training; 2024 for validation; and 2025 for testing. Additionally, we trained the LSTM with sparse categorical cross-entropy loss and Adam optimization and instituted early stopping monitors. Sparse categorical cross-entropy loss was chosen because it suits the structure of our research question very well by not requiring one-hot encoding, and allows us to make efficient use of our limited computational capacity by saving memory. Adam optimization is also useful because it allows our LSTM to reach convergence faster. Lastly, early stopping monitors were our regularization technique of choice because they discourage overfitting, which is very important given that our data evolves over time.</p>
 
     <h3 id="s4-2">4.2 Finetuning Parameters</h3>
-    <p class="placeholder">[Input your finetuning description here.]</p>
+    <p class="placeholder">We did not finetune the XGBoost, as it was clear which model was preferable and suited our data best after our initial runs. For the LSTM, we did experiment. We iterated through different combinations of the following hyperparameters: lookback, units, dropout, batch size, learning rate schedule, constant, warmup, weight decay, momentum, initialization, and the number of epochs. We then calculated the accuracy, F1 scores, and mean absolute error, and visualized the validation losses of the LSTM trained on each hyperparameter combination. The combination that produced the best success metric scores was ultimately selected.</p>
 
     <!-- Finetuning Parameters Image -->
     <div class="table-wrap">
         <img src="blog_images/hyperparameter_tuning.png" alt="Hyperparameter Tuning Parameters" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
     </div>
-    <figcaption><strong>Table 2:</strong> LSTM hyperparameter tuning results across validation and test performance (success metrics of various hyperparameter combinations).</figcaption>
+    <figcaption><strong>Table 2:</strong> LSTM hyperparameter tuning results across validation and test performance. This gives an overview of the best value statistics for each hyperparameter drawn from several hyperparameter experiments. These tables (among others in the Appendix) were used to inform our final hyperparameter choices.</figcaption>
 
-    <p class="placeholder">[Input any additional finetuning text here.]</p>
+    <p class="placeholder">The LSTM hyperparameter results show that performance was relatively stable across tuning choices, with test macro F1 scores clustering around 0.68–0.69. The best test-level settings favored a 14-day lookback window, 128 units, dropout of 0.3, batch size 64, learning rate 0.0003, warmup 100, weight decay 0, momentum 0.9, 30 epochs, cosine learning rate scheduler, and he_normal initializer. This suggests that the LSTM benefited from a longer recent temporal window, but the modest differences across configurations also show that tuning improved performance only incrementally rather than fundamentally changing the model’s limits.</p>
 
     <!-- Figure 1 -->
     <div class="table-wrap">
       <img src="blog_images/tuning_loss.png" alt="Loss Curves for Hyperparameter Tuning" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
     </div>
     <figcaption><strong>Figure 1:</strong> Validation loss curves produced by the different combinations of hyperparameters. </figcaption>
+    <p class="placeholder">The LSTM hyperparameter tuning curves show that validation loss improved quickly in the first few epochs and then plateaued with certain hyperparameter combinations outperforming others. The best loss curves were from Experiments 3 and 7, and these two experiments largely informed our final hyperparameter choices (refer to Appendix for more detailed hyperparameter experiment tables and choice explanations). This suggests that the model learned some useful temporal signal from the ordered ZIP-code daily sequences, but additional training produced limited gains.</p>
   </section>
 
   <!-- SECTION 5 -->
   <section id="section5">
     <h2>5. Results</h2>
-    <p class="placeholder">[Input your results overview text here.]</p>
 
     <h3 id="s5-1">5.1 Summer 2025 Temporal HVI Output</h3>
-    <p class="placeholder">[Input your text here.]</p>
 
     <!-- GIF placeholder -->
     <div class="figure-block">
@@ -571,8 +565,6 @@
       <figcaption><strong>Figure 2:</strong> Temporal HVI for the Summer 2025 test dataset using the final LSTM model. Ranging HVI 1 (least vulnerable) to HVI 5 (most vulnerable).</figcaption>
     </div>
 
-    <p class="placeholder">[Input text here — introduce your figures below.]</p>
-
     <!-- result figures interspersed with text -->
     <div class="figure-block">
       <div class="img-placeholder">
@@ -581,11 +573,10 @@
       <figcaption><strong>Figure 3:</strong> Variability in predicted HVI for Summer 2025. Darker ZIP codes demonstrate more variability (i.e. a stronger temporal component) to heat vulnerability.</figcaption>
     </div>
 
-    <p class="placeholder">[Input text here.]</p>
+    <p class="placeholder">As shown in Figures 2 and 3, the final LSTM model showed temporal variability in heat vulnerability in response to changing daily conditions in temperature and number of heat-related 311 complaints. In general, heat vulnerability is lower in the early months of the summer and increases throughout the summer. Peak HVI is seen in late June and early July, which aligns with the heat trends from 2025. For example, NYC <a href="https://www.nytimes.com/2025/06/22/weather/nyc-heat-wave.html">faced</a> a heat wave from June 23-25, which is reflected in our model outputs: almost all ZIP codes had peak heat vulnerability for this period, with a widespread extent of HVI 5, particularly in Manhattan and Brooklyn. Variability in heat vulnerability is further summarized in Figure 3, which shows the standard deviation of HVI across NYC. Most of the city has an HVI standard deviation of 0.4 or greater, showing that heat vulnerability does have a temporal component that is captured by our LSTM model.</p>
 
-    <p class="placeholder">[Input text here.]</p>
 
-    <h3 id="s5-2">5.2 Answering Our Hypotheses</h3>
+    <h3 id="s5-2">5.2 Model Comparison on the 2025 Temporal Test Set.</h3>
     <div class="figure-block">
       <div class="img-placeholder">
         <img src="blog_images/model_comparison.png" alt="HVI Variability Map for Summer 2025" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
@@ -600,43 +591,46 @@
       <figcaption><strong>Figure 5:</strong> Mean Absolute Class Error by XGBoost and LSTM.</figcaption>
     </div>
 
-    <p class="placeholder">[Input your hypothesis evaluation text here. Address each hypothesis in turn.]</p>
+    <p class="placeholder">The final model comparison shows a substantial performance gap between XGBoost and the LSTM on the 2025 temporal test set. XGBoost achieved near-perfect classification performance across accuracy, macro F1, and weighted F1 while also producing a very low mean absolute class error. In contrast, the LSTM performed poorer across all evaluation metrics. This result suggests that the XGBoost reproduced the official NYC HVI target from the available daily environmental and behavioral features. The LSTM predictions had larger errors and lower classification accuracy against the non-temporal NYC HVI dataset. However, the results do not mean the LSTM failed or was unnecessary because the two models approach (and answer) our question through different methods. XGBoost is optimized to accurately classify and “match” the official NYC HVI based on independent daily observations, while the LSTM is designed to test whether recent temporal context is useful for additional predictive HVI signals. Despite lower accuracy, the LSTM’s training curves and output maps suggest heat vulnerability is predicted dynamically, a feature that XGBoost cannot fully capture. The LSTM therefore remains important because it is the model aligned with the project’s broader motivation: treating heat vulnerability as a changing daily process rather than a fixed neighborhood characteristic.</p>
+
+    <h3 id="s5-3">5.3 The Hollander Applet</h3>
+    <p class="placeholder">	Hollander (named after Shane Hollander from our project’s namesake show Heated Rivalry!) is an interactive tool where the user is able to input temporal features to predict heat vulnerability in a given geographical location. The purpose of Hollander is to allow users to query the LSTM model created in this project and explore outcomes for next-day HVI based on temporal features, lowering the barrier of entry for usage outside of expert circles (see <a href="https://github.com/trisha411/heated-rivalry/blob/main/README.md">here</a> to download Hollander).</p>
+    <div class="figure-block">
+      <div class="img-placeholder">
+        <img src="blog_images/hollander_homescreen.png" alt="HVI Variability Map for Summer 2025" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+      </div>
+      <figcaption><strong>Figure 6:</strong> The user is able to select from these temporal features to predict heat in their neighborhoods.</figcaption>
+    </div>
+
+    <div class="figure-block">
+      <div class="img-placeholder">
+        <img src="blog_images/hollander_map.png" alt="HVI Variability Map for Summer 2025" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+      </div>
+      <figcaption><strong>Figure 7:</strong> After temporal features are in place, Hollander will create a map and predict the vulnerability in that area.</figcaption>
+    </div>
+
+    <h3 id="s5-4">5.4 Answering Our Hypotheses</h3>
+    <p class="placeholder">Hypothesis 1 was fully supported: both the XGBoost and LSTM models showed temporal changes in HVI that were not present in the official NYC HVI, suggesting that HVI does have dynamic components. Hypothesis 2 was partially supported. The model metrics (Figures 4 and 5) suggest that the LSTM model did not outperform XGBoost on standard classification metrics such as accuracy, macro F1, weighted F1, or mean absolute class error. However, the LSTM still showed evidence of learning temporal structure. The validation loss curves stabilized over training, suggesting that the model was able to extract useful signals from ordered daily sequences. Additionally, the dynamic prediction figures demonstrated that predicted heat vulnerability varied across days and ZIP codes rather than remaining fixed over time.</p>
+
   </section>
 
   <!-- SECTION 6 -->
   <section id="section6">
     <h2>6. Limitations</h2>
-    <p class="placeholder">[Input your limitations text here.]</p>
+    <p class="placeholder"><strong>1. Limited Data:</strong> The temporal statistics regarding heat in NYC were constrained, spanning from the summers of 2020 to 2025, meaning our model’s applicability would need to be fine-tuned in the future. However, this appears to be a widespread problem: in their review of studies applying ML to heat-related climate problems, for example, Ssebaya et al. found that all of them could benefit from better quality data.</p>
+    <p class="placeholder"><strong>2. Limited Computational Resources:</strong> Though studies in the past, such as <a href="https://pubs.acs.org/doi/full/10.1021/envhealth.4c00201">Ahn et al.</a> and <a href="https://link.springer.com/article/10.1186/s12874-021-01278-x">Jiang et al.</a>, have overcome the above limitation by simulating data, our study did not adopt a similar approach due to our limited computational capacity and resources. Given that our modeling was conducted on personal computing devices, the implementation of these more intensive methods were beyond the scope of the project.</p>
   </section>
 
   <!-- SECTION 7 -->
   <section id="section7">
     <h2>7. Conclusions &amp; Future Work</h2>
-    <p class="placeholder">[Input your conclusions text here.]</p>
-    <p class="placeholder">[Input your future work text here.]</p>
-  </section>
-
-  <!-- WORKS CITED -->
-  <section id="works-cited">
-    <h2>Works Cited</h2>
-    <div class="works-cited">
-      <ol>
-        <li>[Citation 1]</li>
-        <li>[Citation 2]</li>
-        <li>[Citation 3]</li>
-        <li>[Citation 4]</li>
-        <li>[Citation 5]</li>
-        <li>[Citation 6]</li>
-        <li>[Citation 7]</li>
-        <li>[Citation 8]</li>
-      </ol>
-    </div>
+    <p class="placeholder">Based on our research, we would argue that the application of ML models, specifically LSTMs, is useful in creating a dynamic model of HVI prediction. The implications of our research are relevant for NYC policymakers. The model's ability to predict daily vulnerability enables city governments and organizations to initiate and allocate emergency heat resources in a more accurate and timely manner. Our results are also accessible to a non-expert audience with the development of the “Hollander Applet” <a href="https://github.com/trisha411/heated-rivalry/blob/main/README.md">(see here</a>, where users can see the predicted HVI score of their neighborhoods based on changing temporal features, helping to better prepare themselves to withstand the temperatures as well. Given the significant impact severe-heat has upon the city’s population, this action democratizes access to necessary information on heat stress, vital for securing regular citizens against NYC’s biggest health threat. Thus, our research addresses a gap in the literature on urban heat vulnerability through integrating a temporal component to machine learning heat vulnerability mapping. </p>
   </section>
 
   <!-- APPENDIX -->
   <section id="appendix">
     <h2>Appendix</h2>
-    <p class="placeholder">Additional figures were created for this project and are displayed in the <strong>TemporalHVI_LSTM_model.ipynb</strong> and <strong>final_maps.ipynb</strong> scripts in the GitHub repository.</p>
+    <p class="placeholder">Additional figures were created for this project and are displayed in the <strong>TemporalHVI_LSTM_model.ipynb</strong> and <strong>final_maps.ipynb</strong> scripts in the <a href="https://github.com/trisha411/heated-rivalry">GitHub repository</a>.</p>
   </section>
 
 </main>
