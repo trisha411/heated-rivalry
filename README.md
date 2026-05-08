@@ -35,7 +35,7 @@ Stores the hyperparameter tuning results (.csv), map figures (.png, .gif), and a
 ### data folder
 Stores .csv files for all used datasets
 
-## hollander_applet.py
+### hollander_applet.py
 An applet (titled after Shane Hollander from Heated Rivalry!) to interactively query the trained LSTM model and visualize next-day HVI predictions by ZIP code. In order to run the app, use the following Terminal commands to create the heated_rivalry environment and open the app in-browser:
 
 ```bash
