@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Heat Vulnerability Prediction | ML Final Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0f0f0;
+      --surface: #e8e8e8;
+      --border: #cccccc;
+      --text: #111111;
+      --text-muted: #555555;
+      --accent: #111111;
+    }
+
+    body {
+      font-family: 'Merriweather', serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--bg);
+      padding: 4rem 2rem 0;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero-course {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      font-style: italic;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── AUTHOR / META GRID ── */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 1.5rem 0 2rem;
+      padding: 1.5rem 0;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .meta-block { padding: 0 1rem 0 0; }
+    .meta-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      font-family: 'Merriweather', serif;
+    }
+    .meta-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .meta-value.light {
+      font-weight: 300;
+      color: var(--text-muted);
+    }
+
+    /* ── TABLE OF CONTENTS ── */
+    .toc-wrapper {
+      max-width: 860px;
+      margin: 0 auto 3rem;
+      padding: 0 2rem;
+    }
+    .toc-box {
+      border: 1px solid var(--border);
+      padding: 1.75rem 2rem;
+    }
+    .toc-box h2 {
+      font-size: 1.3rem;
+      font-weight: 900;
+      margin-bottom: 1.25rem;
+      border: none;
+      padding: 0;
+    }
+    .toc-box ol {
+      list-style: none;
+      padding: 0;
+    }
+    .toc-box > ol > li {
+      margin-bottom: 0.6rem;
+    }
+    .toc-box a {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .toc-box a:hover { text-decoration: underline; }
+    .toc-sub {
+      list-style: none;
+      padding-left: 1.5rem;
+      margin-top: 0.3rem;
+    }
+    .toc-sub li { margin-bottom: 0.25rem; }
+    .toc-sub a {
+      font-weight: 300;
+      font-size: 0.87rem;
+    }
+    .toc-sub2 {
+      list-style: none;
+      padding-left: 1.5rem;
+      margin-top: 0.2rem;
+    }
+    .toc-sub2 a {
+      font-weight: 300;
+      font-size: 0.83rem;
+      font-style: italic;
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    /* ── SECTION HEADINGS ── */
+    h2 {
+      font-size: 1.55rem;
+      font-weight: 900;
+      margin: 3.5rem 0 1rem;
+      color: var(--text);
+      border-top: 2px solid var(--text);
+      padding-top: 1rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 2rem 0 0.75rem;
+      color: var(--text);
+    }
+    h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-style: italic;
+      margin: 1.5rem 0 0.5rem;
+      color: var(--text);
+    }
+
+    /* ── BODY TEXT ── */
+    p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+      color: #222;
+    }
+    .placeholder {
+      color: var(--text-muted);
+      font-weight: 300;
+      font-size: 0.88rem;
+    }
+
+    /* ── HYPOTHESIS BOXES ── */
+    .hypothesis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .hypothesis-box {
+      border: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      background: var(--surface);
+    }
+    .hypothesis-box .h-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .hypothesis-box p { font-style: italic; font-size: 0.88rem; margin: 0; }
+
+    /* ── DATA TABLE ── */
+    .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Merriweather', serif;
+      font-size: 0.85rem;
+    }
+    th {
+      border: 1px solid var(--text);
+      padding: 0.65rem 1rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      background: var(--bg);
+    }
+    td {
+      border: 1px solid var(--border);
+      padding: 0.65rem 1rem;
+      text-align: center;
+      font-weight: 300;
+      vertical-align: middle;
+    }
+    td a { color: var(--text); font-weight: 300; }
+    td a:hover { text-decoration: none; color: #444; }
+
+    /* ── EQUATION BOX ── */
+    .equation {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+      text-align: center;
+      font-size: 1rem;
+    }
+    .equation .eq-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .eq-math {
+      font-size: 1.05rem;
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── FINETUNING TABLE ── */
+    .param-table th { text-align: left; }
+    .param-table td { text-align: left; }
+
+    /* ── FIGURE / IMAGE PLACEHOLDERS ── */
+    .figure-block {
+      margin: 2rem 0;
+    }
+    .img-placeholder {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 300;
+      font-style: italic;
+      padding: 1rem;
+    }
+    .img-placeholder .icon { font-size: 2rem; margin-bottom: 0.25rem; }
+    figcaption {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      font-style: italic;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* ── INLINE FIGURE ROW ── */
+    .figure-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .figure-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+    /* ── WORKS CITED ── */
+    .works-cited ol {
+      padding-left: 1.5rem;
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: #333;
+    }
+    .works-cited li { margin-bottom: 0.4rem; }
+
+    /* ── APPENDIX ── */
+    .appendix-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      margin-top: 1rem;
+      min-height: 120px;
+    }
+
+    /* ── DIVIDER ── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    @media (max-width: 640px) {
+      .hypothesis-grid { grid-template-columns: 1fr; }
+      .figure-row { grid-template-columns: 1fr; }
+      .figure-row.three { grid-template-columns: 1fr; }
+      .meta-grid { grid-template-columns: 1fr; gap: 1rem; }
+      h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <p class="hero-course">STAT3106 Final Project</p>
+  <h1>Heated Rivalry: Predicting Dynamic Heat Vulnerability in New York City Using an LSTM Model</h1>
+</div>
+
+<!-- ── META ── -->
+<div class="meta-grid" style="padding-left:2rem; padding-right:2rem;">
+  <div class="meta-block">
+    <div class="meta-label">Authors</div>
+    <div class="meta-value">Samidha Mishra<br/>Jose Caballero<br/>Trisha Sharan<br/>Linden James</div>
+  </div>
+  <div class="meta-block" style="margin-top:1.25rem;">
+    <div class="meta-label">Published</div>
+    <div class="meta-value light">May 8th, 2026</div>
+  </div>
+  <div class="meta-block" style="margin-top:1.25rem;">
+    <div class="meta-label">Course</div>
+    <div class="meta-value light">STAT3106: Applied Machine Learning</div>
+  </div>
+</div>
+
+<!-- ── TABLE OF CONTENTS ── -->
+<div class="toc-wrapper">
+  <div class="toc-box">
+    <h2>Contents</h2>
+    <ol>
+      <li>
+        <a href="#section1">I. Introduction &amp; Literature Review</a>
+        <ul class="toc-sub">
+          <li><a href="#s1-1">1.1 Heat Exposure-Related Mortality</a></li>
+          <li><a href="#s1-2">1.2 Environmental Justice &amp; Heat Vulnerability Indices (HVI)</a></li>
+          <li><a href="#s1-3">1.3 Technical Literature Review</a></li>
+        </ul>
+      </li>
+      <li style="margin-top:0.5rem;">
+        <a href="#section2">2. Research Questions &amp; Hypotheses</a>
+      </li>
+      <li style="margin-top:0.5rem;">
+        <a href="#section3">3. Methodology</a>
+        <ul class="toc-sub">
+          <li><a href="#s3-1">3.1 Data Collection &amp; Processing</a></li>
+          <li>
+            <a href="#s3-2">3.2 Model Selection</a>
+            <ul class="toc-sub2">
+              <li><a href="#s3-2-1">3.2.1 Cross-Sectional Baseline: XGBoost</a></li>
+              <li><a href="#s3-2-2">3.2.2 Long Short-Term Memory Models</a></li>
+            </ul>
+          </li>
+          <li><a href="#s3-3">3.3 Inputs &amp; Outputs</a></li>
+          <li><a href="#s3-4">3.4 Success Metrics</a></li>
+        </ul>
+      </li>
+      <li style="margin-top:0.5rem;">
+        <a href="#section4">4. Model Training and Finetuning</a>
+        <ul class="toc-sub">
+          <li>
+            <a href="#s4-1">4.1 Training</a>
+            <ul class="toc-sub2">
+              <li><a href="#s4-1-1">4.1.1 XGBoost</a></li>
+              <li><a href="#s4-1-2">4.1.2 LSTM</a></li>
+            </ul>
+          </li>
+          <li><a href="#s4-2">4.2 Finetuning Parameters</a></li>
+        </ul>
+      </li>
+      <li style="margin-top:0.5rem;">
+        <a href="#section5">5. Results</a>
+        <ul class="toc-sub">
+          <li><a href="#s5-1">5.1 Summer 2025 Temporal HVI Output</a></li>
+          <li><a href="#s5-2">5.2 Answering Our Hypotheses</a></li>
+        </ul>
+      </li>
+      <li style="margin-top:0.5rem;"><a href="#section6">6. Limitations</a></li>
+      <li style="margin-top:0.5rem;"><a href="#section7">7. Conclusions &amp; Future Work</a></li>
+      <li style="margin-top:0.5rem;"><a href="#works-cited">Works Cited</a></li>
+      <li style="margin-top:0.5rem;"><a href="#appendix">Appendix</a></li>
+    </ol>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<main>
+
+  <!-- SECTION 1 -->
+  <section id="section1">
+    <h2>I. Introduction &amp; Literature Review</h2>
+    <p class="placeholder">[Input your introductory text here.]</p>
+
+    <h3 id="s1-1">1.1 Heat Exposure-Related Mortality</h3>
+    <p class="placeholder">[Input your text here.]</p>
+
+    <h3 id="s1-2">1.2 Environmental Justice &amp; Heat Vulnerability Indices (HVI)</h3>
+    <p class="placeholder">[Input your text here.]</p>
+
+    <h3 id="s1-3">1.3 Technical Literature Review</h3>
+    <p class="placeholder">[Input your text here.]</p>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section id="section2">
+    <h2>2. Research Questions &amp; Hypotheses</h2>
+    <p class="placeholder">[Input your research question text here.]</p>
+
+    <div class="hypothesis-grid">
+      <div class="hypothesis-box">
+        <div class="h-label">Hypothesis 1</div>
+        <p class="placeholder">[Input Hypothesis 1 here.]</p>
+      </div>
+      <div class="hypothesis-box">
+        <div class="h-label">Hypothesis 2</div>
+        <p class="placeholder">[Input Hypothesis 2 here.]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section id="section3">
+    <h2>3. Methodology</h2>
+    <p class="placeholder">[Input your methodology overview text here.]</p>
+
+    <h3 id="s3-1">3.1 Data Collection &amp; Processing</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Format</th>
+            <th>Temporal Extent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-2019/76ig-c548/data_preview">311 Calls</a></td>
+            <td>Individual Calls Logged</td>
+            <td>2010-2019, 2020-present (daily)</td>
+          </tr>
+          <tr>
+            <td><a href="https://data.cityofnewyork.us/Environment/Natural-Gas-Consumption-by-ZIP-Code-2010/uedp-fegm/data_preview">Natural Gas Consumption</a></td>
+            <td>Consumption logged by ZIP code</td>
+            <td>2010 (static)</td>
+          </tr>
+          <tr>
+            <td><a href="https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/uvpi-gqnh/data_preview">Street Trees</a></td>
+            <td>Individual trees logged</td>
+            <td>2015 (static)</td>
+          </tr>
+          <tr>
+            <td><a href="https://data.cityofnewyork.us/dataset/Cool-It-NYC-2020-Drinking-Fountains/wxhr-qbhz/about_data">Drinking Fountains</a></td>
+            <td>Program implemented in response to HVI values</td>
+            <td>2020</td>
+          </tr>
+          <tr>
+            <td><a href="https://dashboards.securedatakit.com/public/dashboard/5b8fe700-531b-416b-9cf5-3ee9b93a2353?city=&state=&zip=">Population Density</a></td>
+            <td>Census data</td>
+            <td>2020 (static)</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.ncei.noaa.gov/cdo-web/search?datasetid=GHCND">Maximum Temperature</a></td>
+            <td>JFK Airport Weather Station</td>
+            <td>2000-present (daily)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <figcaption><strong>Table 1:</strong> Table of variables and the data used to represent them.</figcaption>
+
+    <h3 id="s3-2">3.2 Model Selection</h3>
+    <p class="placeholder">[Input your model selection overview text here.]</p>
+
+    <h4 id="s3-2-1">3.2.1 Cross-Sectional Baseline Model of Choice: XGBoost</h4>
+    <p class="placeholder">[Input your XGBoost description here.]</p>
+
+    <h4 id="s3-2-2">3.2.2 Long Short-Term Memory Models</h4>
+    <p class="placeholder">[Input your LSTM description here.]</p>
+
+    <h3 id="s3-3">3.3 Inputs &amp; Outputs</h3>
+    <p class="placeholder">[Input your inputs and outputs description here.]</p>
+
+    <h3 id="s3-4">3.4 Success Metrics</h3>
+    <p class="placeholder">[Input your success metrics description here.]</p>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section id="section4">
+    <h2>4. Model Training and Finetuning</h2>
+    <p class="placeholder">[Input your training overview text here.]</p>
+
+    <h3 id="s4-1">4.1 Training</h3>
+
+    <h4 id="s4-1-1">4.1.1 XGBoost</h4>
+    <p class="placeholder">[Input your XGBoost training description here.]</p>
+
+    <h4 id="s4-1-2">4.1.2 LSTM</h4>
+    <p class="placeholder">[Input your LSTM training description here.]</p>
+
+    <!-- Sparse Categorical Cross-Entropy Equation -->
+    <div class="equation">
+      <div class="eq-label">Loss Function — Sparse Categorical Cross-Entropy</div>
+      <div class="eq-math">
+        L = &minus; &Sigma;<sub>i</sub> y<sub>i</sub> &middot; log( ŷ<sub>i</sub> )
+      </div>
+      <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.5rem; font-weight:300; font-style:italic;">[Add any additional notation or explanation of terms here.]</div>
+    </div>
+
+    <p class="placeholder">[Continue LSTM training description here.]</p>
+
+    <h3 id="s4-2">4.2 Finetuning Parameters</h3>
+    <p class="placeholder">[Input your finetuning description here.]</p>
+
+    <!-- Finetuning Parameters Image -->
+    <div class="table-wrap">
+        <img src="blog_images/hyperparameter_tuning.png" alt="Hyperparameter Tuning Parameters" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+    </div>
+    <figcaption><strong>Table 2:</strong> LSTM hyperparameter tuning results across validation and test performance (success metrics of various hyperparameter combinations).</figcaption>
+
+    <p class="placeholder">[Input any additional finetuning text here.]</p>
+
+    <!-- Figure 1 -->
+    <div class="table-wrap">
+      <img src="blog_images/tuning_loss.png" alt="Loss Curves for Hyperparameter Tuning" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+    </div>
+    <figcaption><strong>Figure 1:</strong> Validation loss curves produced by the different combinations of hyperparameters. </figcaption>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section id="section5">
+    <h2>5. Results</h2>
+    <p class="placeholder">[Input your results overview text here.]</p>
+
+    <h3 id="s5-1">5.1 Summer 2025 Temporal HVI Output</h3>
+    <p class="placeholder">[Input your text here.]</p>
+
+    <!-- GIF placeholder -->
+    <div class="figure-block">
+      <div class="img-placeholder gif">
+        <img src="blog_images/hvi_animation.gif" alt="Animated Temporal HVI Output across NYC ZIP codes, Summer 2025" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+      </div>
+      <figcaption><strong>Figure 2:</strong> Temporal HVI for the Summer 2025 test dataset using the final LSTM model. Ranging HVI 1 (least vulnerable) to HVI 5 (most vulnerable).</figcaption>
+    </div>
+
+    <p class="placeholder">[Input text here — introduce your figures below.]</p>
+
+    <!-- result figures interspersed with text -->
+    <div class="figure-block">
+      <div class="img-placeholder">
+        <img src="model/hvi_variability_map_summer2025.png" alt="HVI Variability Map for Summer 2025" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+      </div>
+      <figcaption><strong>Figure 3:</strong> Variability in predicted HVI for Summer 2025. Darker ZIP codes demonstrate more variability (i.e. a stronger temporal component) to heat vulnerability.</figcaption>
+    </div>
+
+    <p class="placeholder">[Input text here.]</p>
+
+    <p class="placeholder">[Input text here.]</p>
+
+    <h3 id="s5-2">5.2 Answering Our Hypotheses</h3>
+    <div class="figure-block">
+      <div class="img-placeholder">
+        <img src="blog_images/model_comparison.png" alt="HVI Variability Map for Summer 2025" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+      </div>
+      <figcaption><strong>Figure 4:</strong> Model Comparison (XGBoost vs. LSTM) on 2025 Temporal test set. Note that axes are cropped to 0.6-1 to make it easier to show variability.</figcaption>
+    </div>
+
+    <div class="figure-block">
+      <div class="img-placeholder">
+        <img src="blog_images/model_mae.png" alt="HVI Variability Map for Summer 2025" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+      </div>
+      <figcaption><strong>Figure 5:</strong> Mean Absolute Class Error by XGBoost and LSTM.</figcaption>
+    </div>
+
+    <p class="placeholder">[Input your hypothesis evaluation text here. Address each hypothesis in turn.]</p>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section id="section6">
+    <h2>6. Limitations</h2>
+    <p class="placeholder">[Input your limitations text here.]</p>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section id="section7">
+    <h2>7. Conclusions &amp; Future Work</h2>
+    <p class="placeholder">[Input your conclusions text here.]</p>
+    <p class="placeholder">[Input your future work text here.]</p>
+  </section>
+
+  <!-- WORKS CITED -->
+  <section id="works-cited">
+    <h2>Works Cited</h2>
+    <div class="works-cited">
+      <ol>
+        <li>[Citation 1]</li>
+        <li>[Citation 2]</li>
+        <li>[Citation 3]</li>
+        <li>[Citation 4]</li>
+        <li>[Citation 5]</li>
+        <li>[Citation 6]</li>
+        <li>[Citation 7]</li>
+        <li>[Citation 8]</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- APPENDIX -->
+  <section id="appendix">
+    <h2>Appendix</h2>
+    <p class="placeholder">Additional figures were created for this project and are displayed in the <strong>TemporalHVI_LSTM_model.ipynb</strong> and <strong>final_maps.ipynb</strong> scripts in the GitHub repository.</p>
+  </section>
+
+</main>
+
+</body>
+</html>
