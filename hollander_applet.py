@@ -145,7 +145,7 @@ def add_legend(map_object):
     map_object.get_root().html.add_child(folium.Element(legend_html))
 
 def main():
-    st.title("HVI Next-day Predictor — Interactive Explorer")
+    st.title("HVI Next-day Predictor —  Hollander Applet")
     st.write("Enter a ZIP code and adjust temperature / 311 call sliders to see next-day predicted HVI projected onto the map.")
 
     cfg = load_config()
