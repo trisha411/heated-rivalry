@@ -1,16 +1,6 @@
 # Using an LSTM Model to Construct a Temporally-Evolving Heat Vulnerability Index (HVI) for NYC
 
 ## Relevant Scripts
-### aggregateData.R
-Inputs: Datasets from data folder
-
-Outputs: allData.csv, data_NAandSteamOmitted.csv
-
-Goal: take heat vulnerability-relevant datasets and create a .csv file with relevant variables across time and ZIP code.
-
-### ML Tree Stuff.Rmd
-Goal: prepare tree counts and 311 calls datasets for use in aggregateData.R
-
 ### TemporalHVI_LSTM_model.ipynb
 Inputs: data_NAandSteamOmitted.csv
 
@@ -25,7 +15,20 @@ Outputs (in the "model" folder): Map figures and gif showing predictions from th
 
 Goal: Make maps to visualize predicted temporal HVI and how it varies over time.
 
+### aggregateData.R
+Inputs: Datasets from data folder
+
+Outputs: allData.csv, data_NAandSteamOmitted.csv
+
+Goal: take heat vulnerability-relevant datasets and create a .csv file with relevant variables across time and ZIP code.
+
+### ML Tree Stuff.Rmd
+Goal: prepare tree counts and 311 calls datasets for use in aggregateData.R
+
 ## Other Components
+### technical_blog_post.html
+HTML file for rendering our final technical blog post in-browser.
+
 ### environment.yml
 Creates the heated_rivalry Conda environment (with some pip dependencies) necessary to run all .ipynb and .py scripts.
 
