@@ -8,7 +8,7 @@ dependencies:
   - ipykernel
   # Commonly used packages
   - xarray
-  - numpy
+  - numpy=1.26.4
   - scipy
   - pandas
   - matplotlib
@@ -21,7 +21,14 @@ dependencies:
   - scikit-learn
   - xgboost
   - pytorch
+  - geopandas
   - pip:
     - tensorflow-macos
     - tensorflow-metal
     - graphviz
+    - ml_dtypes==0.3.2
+    - streamlit
+    - streamlit-folium
+    - folium
+    - branca
+    - geopandas

@@ -1,0 +1,36 @@
+{
+  "features": [
+    "call_count",
+    "max_temp",
+    "tree_count",
+    "population_density",
+    "population",
+    "fountains",
+    "gas_therms"
+  ],
+  "best_config": {
+    "lookback": 14,
+    "units": 128,
+    "dropout": 0.3,
+    "batch_size": 64,
+    "lr": 0.0003,
+    "lr_schedule": "cosine",
+    "warmup": 100,
+    "weight_decay": 0.0,
+    "momentum": 0.9,
+    "init": "he_normal",
+    "epochs": 30
+  },
+  "class_labels": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "date_range": [
+    "2020-05-15 00:00:00",
+    "2025-09-15 00:00:00"
+  ],
+  "n_zips": 165
+}

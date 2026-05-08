@@ -24,3 +24,30 @@ Necessary dependencies for .ipynb files
 
 ### data folder
 Stores .csv files for all used datasets
+
+## Streamlit HVI Predictor
+
+A lightweight Streamlit app to interactively query the trained LSTM model and visualize next-day HVI predictions by ZIP code.
+
+Run the app:
+
+```bash
+conda env update -f environment.yml --prune
+conda activate heated_rivalry
+streamlit run app_streamlit.py
+```
+
+Or install pip packages and run:
+
+```bash
+pip install -r requirements.txt
+streamlit run app_streamlit.py
+```
+
+Files added:
+- `app_streamlit.py` — interactive Streamlit UI
+- `requirements.txt` — pip installable deps
+
+Notes:
+- On macOS Apple Silicon, `tensorflow-macos` and `tensorflow-metal` are recommended (included in `environment.yml`).
+- `geopandas` is installed via conda-forge to ensure native geospatial libs are available.

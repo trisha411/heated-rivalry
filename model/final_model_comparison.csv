@@ -1,0 +1,3 @@
+Model,Input Type,N Test Observations,Accuracy,Macro F1,Weighted F1,Mean Absolute Class Error
+XGBoost,Single-day tabular row,20295,0.987,0.987,0.987,0.013
+LSTM,Rolling sequence,17985,0.689,0.69,0.691,0.326
